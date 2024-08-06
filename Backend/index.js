@@ -17,20 +17,21 @@ const PORT = process.env.PORT || 4000;
 const URI = process.env.MongoDBURI;
 
 // connect to mongoDB
-try {
-    mongoose.connect(URI, {
-        useNewUrlParser: true,
-        useUnifiedTopology: true,
-    });
-    console.log("Connected to mongoDB");
-} catch (error) {
-    console.log("Error: ", error);
-}
 
 // defining routes
 app.use("/book", bookRoute);
 app.use("/user", userRoute);
 
-app.listen(PORT, () => {
+app.listen(PORT, async () => {
+    try {
+        await mongoose.connect(URI, {
+            useNewUrlParser: true,
+            useUnifiedTopology: true,
+        });
+        console.log("Connected to mongoDB");
+    } catch (error) {
+        console.log("Error: ", error);
+    }
+
     console.log(`Server is listening on port ${PORT}`);
 });
